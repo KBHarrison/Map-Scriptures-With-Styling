@@ -221,29 +221,24 @@ const Scriptures = (function () {
         let crumbs = "";
 
         if (volume === undefined) {
-            crumbs += htmlElement(TAG_LIST_ITEM, TEXT_TOP_LEVEL);
+            crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink("undefined",TEXT_TOP_LEVEL));
         } else {
-            crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink("", TEXT_TOP_LEVEL));
+            crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink("undefined", TEXT_TOP_LEVEL));
             if (book === undefined) {
-                crumbs += CHEVRON;
-                crumbs += htmlElement(TAG_LIST_ITEM, volume.fullName);
+                crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink("#",volume.fullName));
             } else {
-                crumbs += CHEVRON;
                 crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink(`${volume.id}`, volume.fullName));
 
                 if (chapter === undefined || chapter <= 0) {
-                    crumbs += CHEVRON;
-                    crumbs += htmlElement(TAG_LIST_ITEM, book.tocName);
+                    crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink("#",book.tocName));
                 } else {
-                    crumbs += CHEVRON;
                     crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink(`${volume.id},${book.id}`, book.tocName));
-                    crumbs += CHEVRON;
-                    crumbs += htmlElement(TAG_LIST_ITEM, chapter);
+                    crumbs += htmlElement(TAG_LIST_ITEM, htmlHashLink(`#`, chapter));
                 }
             }
         }
 
-        return htmlElement(TAG_ORDERED_LIST, crumbs);
+        return htmlElement(TAG_UNORDERED_LIST, crumbs);
     };
 
     cacheBooks = function (onInitializedCallback) {

@@ -7,22 +7,22 @@ h5 {
     text-align: center;
 }
 
-ol {
+ul {
     list-style-type: none;
 }
 
-ol > li {
+ul > li {
     display: inline;
     font-size: large;
 }
-ol > li > a:hover {
+ul > li > a:hover {
     display: inline;
     font-size: large;
     list-style-type: none;
-    color: orangered;
+    culor: orangered;
 }
 
-ol > i.material-icons{
+ul > i.material-icons{
     font-size: 1rem;
 }
 

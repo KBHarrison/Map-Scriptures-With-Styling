@@ -1,105 +1,132 @@
 /* 
-Breadcrumb styling designed by Glynn Smith: https://codepen.io/iamglynnsmith/pen/BRGjgW
- */
+Breadcrumbs styling by tomek8899 gathered from https://codepen.io/tomek8899/pen/obJsu  */
 
-* {
-    box-sizing: border-box;
+@import url(https://fonts.googleapis.com/css?family=Monda:400,700);
+
+body {
+  font-family: 'Monda', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #666;
+  background: #f0f0f0;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    min-width: 480px;
-    padding: 0 40px;
+h1 {
+  margin: 0 0 20px 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2em;
+  color: #3FABBA;
 }
+
+a {
+  text-decoration: none;
+  color: #3FABBA;
+}
+
+.clear {
+  clear: both;
+}
+
+.animation {
+  -webkit-transition: all 0.3s ;
+  -moz-transition: all 0.3s ;
+  -ms-transition: all 0.3s ;
+  -o-transition: all 0.3s ;
+  transition: all 0.3s ;
+}
+
+.wrapper {
+  width: 600px;
+  padding: 20px;
+  margin: 20px auto;
+  background: #fff;
+}
+
+
 #crumbs {
-    display: flex;
-    border-radius: 6px;
-    overflow: hidden;
-    margin: auto;
-    text-align: center;
-    top: 50%;
-    width: 100%;
-    height: 57px;
-    transform: translateY(-50%);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 1), 0 4px 14px rgba(0, 0, 0, 0.7);
-    z-index: 1;
-    background-color: #ddd;
-    font-size: 14px;
+  position: relative;
 }
-#crumbs a {
-    position: relative;
-    display: flex;
-    flex-grow: 1;
-    text-decoration: none;
-    margin: auto;
-    height: 100%;
-    padding-left: 38px;
-    padding-right: 0;
-    color: #666;
+
+#crumbs li {
+  position: relative;
+  float: left;
 }
-#crumbs a:first-child {
-    padding-left: 15.2px;
+
+#crumbs li a,
+#crumbs li p {
+  display: block;
+  padding: 0 10px 0 30px;
+  line-height: 40px;
+  color: #fff;
+  background: #3fabba;
 }
-#crumbs a:last-child {
-    padding-right: 15.2px;
+
+
+
+#crumbs li:first-child a {
+  padding: 0 10px 0 20px;  
 }
-#crumbs a:after {
-    content: "";
-    position: absolute;
-    display: inline-block;
-    width: 57px;
-    height: 57px;
-    top: 0;
-    right: -28.1481481481px;
-    background-color: #ddd;
-    border-top-right-radius: 5px;
-    transform: scale(0.707) rotate(45deg);
-    box-shadow: 1px -1px rgba(0, 0, 0, 0.25);
-    z-index: 1;
+
+/* #crumbs li a:hover {
+    filter: brightness(85%);
+} */
+
+#crumbs li.activePage p,
+#crumbs li.activePage a {
+  background: #333;
 }
-#crumbs a:last-child:after {
-    content: none;
+
+#crumbs li:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -20px;
+  display: block;
+  width: 0; 
+  height: 0; 
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid #3fabba;
+  z-index: 10;
 }
-.breadcrumb__inner {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    z-index: 2;
+
+#crumbs li.activePage:after {
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid #333;
 }
-.breadcrumb__title {
-    font-weight: bold;
+
+/* GIVE EVERY CHILD A DIFFERENT COLOR */
+#crumbs li:nth-child(1) a {
+  background: #3fabba;
 }
-#crumbs a.active, #crumbs a:hover {
-    background: #996300;
-    color: white;
+
+#crumbs li:nth-child(1):after {
+  border-left: 20px solid #3fabba;
 }
-#crumbs a.active:after, #crumbs a:hover:after {
-    background: #996300;
-    color: white;
+
+#crumbs li:nth-child(2) a {
+  background: #46bdcd;
 }
-@media all and (max-width: 1000px) {
-    #crumbs {
-        font-size: 12px;
-   }
+
+#crumbs li:nth-child(2):after {
+  border-left: 20px solid #46bdcd;
 }
-@media all and (max-width: 710px) {
-    .breadcrumb__desc {
-        display: none;
-   }
-    #crumbs {
-        height: 38px;
-   }
-    #crumbs a {
-        padding-left: 25.3333333333px;
-   }
-    #crumbs a:after {
-        content: "";
-        width: 38px;
-        height: 38px;
-        right: -19px;
-        transform: scale(0.707) rotate(45deg);
-   }
+
+#crumbs li:nth-child(3) a {
+  background: #4bd0e2;
+}
+
+#crumbs li:nth-child(3):after {
+  border-left: 20px solid #4bd0e2;
+}
+
+#crumbs li:last-child a {
+  background: black;
+}
+
+#crumbs li:nth-child(3):after {
+    background: black;
+  border-left: 20px solid #4bd0e2;
 }
