@@ -1,0 +1,105 @@
+/* 
+Breadcrumb styling designed by Glynn Smith: https://codepen.io/iamglynnsmith/pen/BRGjgW
+ */
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    min-width: 480px;
+    padding: 0 40px;
+}
+#crumbs {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: auto;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+    height: 57px;
+    transform: translateY(-50%);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 1), 0 4px 14px rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    background-color: #ddd;
+    font-size: 14px;
+}
+#crumbs a {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    text-decoration: none;
+    margin: auto;
+    height: 100%;
+    padding-left: 38px;
+    padding-right: 0;
+    color: #666;
+}
+#crumbs a:first-child {
+    padding-left: 15.2px;
+}
+#crumbs a:last-child {
+    padding-right: 15.2px;
+}
+#crumbs a:after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 57px;
+    height: 57px;
+    top: 0;
+    right: -28.1481481481px;
+    background-color: #ddd;
+    border-top-right-radius: 5px;
+    transform: scale(0.707) rotate(45deg);
+    box-shadow: 1px -1px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+}
+#crumbs a:last-child:after {
+    content: none;
+}
+.breadcrumb__inner {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    z-index: 2;
+}
+.breadcrumb__title {
+    font-weight: bold;
+}
+#crumbs a.active, #crumbs a:hover {
+    background: #996300;
+    color: white;
+}
+#crumbs a.active:after, #crumbs a:hover:after {
+    background: #996300;
+    color: white;
+}
+@media all and (max-width: 1000px) {
+    #crumbs {
+        font-size: 12px;
+   }
+}
+@media all and (max-width: 710px) {
+    .breadcrumb__desc {
+        display: none;
+   }
+    #crumbs {
+        height: 38px;
+   }
+    #crumbs a {
+        padding-left: 25.3333333333px;
+   }
+    #crumbs a:after {
+        content: "";
+        width: 38px;
+        height: 38px;
+        right: -19px;
+        transform: scale(0.707) rotate(45deg);
+   }
+}
