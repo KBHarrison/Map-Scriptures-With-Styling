@@ -519,13 +519,13 @@ const Scriptures = (function () {
             if (nextPrev === undefined) {
                 requestedNextPrevious = "";
             } else {
-                requestedNextPrevious = nextPreviousMarkup(nextPrev, ICON_PREVIOUS);
+                requestedNextPrevious = "<span id='nextChapter' onclick='console.log(\"Previous Chapter Clicked\")'>" + nextPreviousMarkup(nextPrev, ICON_PREVIOUS) + "</span>";
             }
 
             nextPrev = nextChapter(bookId, chapter);
 
             if (nextPrev !== undefined) {
-                requestedNextPrevious += nextPreviousMarkup(nextPrev, ICON_NEXT);
+                requestedNextPrevious += "<span id='previousChapter' onclick='console.log(\"Next Chapter Clicked\")'>" + nextPreviousMarkup(nextPrev, ICON_NEXT) + "</span>";
             }
 
             ajax(encodedScripturesUrlParameters(bookId, chapter), getScripturesCallback, getScripturesFailure, true);

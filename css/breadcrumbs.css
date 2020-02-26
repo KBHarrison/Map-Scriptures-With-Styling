@@ -7,7 +7,6 @@ body {
   font-family: 'Monda', sans-serif;
   font-size: 16px;
   line-height: 24px;
-  color: #666;
   background: #f0f0f0;
 }
 
@@ -122,11 +121,11 @@ a {
   border-left: 20px solid #4bd0e2;
 }
 
-#crumbs li:last-child a {
+/* #crumbs li:last-child a {
   background: black;
-}
+} */
 
-#crumbs li:nth-child(3):after {
+/* #crumbs li:nth-child(3):after {
     background: black;
-  border-left: 20px solid #4bd0e2;
-}
+border-left: 20px solid #4bd0e2;
+} */
