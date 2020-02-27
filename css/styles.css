@@ -112,7 +112,7 @@ div.subtitle {
 }
 
 #scriptures {
-    min-width: 220px;
+    /* min-width: 220px; */
     max-width: 440px;
     flex: 1 1 30%;
     height: 100%;
@@ -120,6 +120,19 @@ div.subtitle {
     overflow-x: hidden;
     overflow-y: hidden;
     border-right: 1px solid #aaa;
+    position: relative;
+}
+
+#newScriptures {
+    max-width: 440px;
+    flex: 1 1 30%;
+    height: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    border-right: 1px solid #aaa;   
+    color: red;
+    z-index: 1500;
     position: relative;
 }
 

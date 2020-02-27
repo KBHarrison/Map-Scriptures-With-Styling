@@ -35,6 +35,7 @@ const Scriptures = (function () {
     const CLASS_ICON = "material-icons";
     const CLASS_VOLUME = "volume";
     const DIV_BREADCRUMBS = "crumbs";
+    const DIV_NEW_SCRIPTURES = "newScriptures";
     const DIV_SCRIPTURES_NAVIGATOR = "scripnav";
     const DIV_SCRIPTURES = "scriptures";
     const ICON_NEXT = "skip_next";
@@ -64,6 +65,7 @@ const Scriptures = (function () {
     /*------------------------------------------------------------------------
      *                      PRIVATE VARIABLES
      */
+    let animationType = "";
     let books;
     let gmLabels = [];
     let gmMarkers = [];
@@ -333,7 +335,23 @@ const Scriptures = (function () {
     };
 
     getScripturesCallback = function (chapterHtml) {
-        document.getElementById(DIV_SCRIPTURES).innerHTML = chapterHtml;
+        
+        if (animationType === "next") {
+            document.getElementById(DIV_NEW_SCRIPTURES).innerHTML = chapterHtml;
+            $(`#${DIV_SCRIPTURES}`).hide("slide");
+        }
+        else if (animationType === "previous") {
+
+        }
+        else {
+            document.getElementById(DIV_NEW_SCRIPTURES).innerHTML = chapterHtml;
+            $(`#scriptures`).toggle("slide");    
+            $('#newScriptures').toggle("slide");
+        }
+        animationType = "";
+        document.getElementById("scriptures").innerHTML = chapterHtml;
+        // $("#newScriptures").hide(2000);
+        // $("#scriptures").toggle("slide");
         document.querySelectorAll(".navheading").forEach(function (element) {
             element.appendChild(parseHtml(`<div class="nextprev">${requestedNextPrevious}</div>`)[0]);
         });
@@ -519,13 +537,13 @@ const Scriptures = (function () {
             if (nextPrev === undefined) {
                 requestedNextPrevious = "";
             } else {
-                requestedNextPrevious = "<span id='nextChapter' onclick='console.log(\"Previous Chapter Clicked\")'>" + nextPreviousMarkup(nextPrev, ICON_PREVIOUS) + "</span>";
+                requestedNextPrevious = "<span id='nextChapter' onclick='Scriptures.animationType = \"previous\"'>" + nextPreviousMarkup(nextPrev, ICON_PREVIOUS) + "</span>";
             }
 
             nextPrev = nextChapter(bookId, chapter);
 
             if (nextPrev !== undefined) {
-                requestedNextPrevious += "<span id='previousChapter' onclick='console.log(\"Next Chapter Clicked\")'>" + nextPreviousMarkup(nextPrev, ICON_NEXT) + "</span>";
+                requestedNextPrevious += "<span id='previousChapter' onclick='Scriptures.animationType = \"next\"'>" + nextPreviousMarkup(nextPrev, ICON_NEXT) + "</span>";
             }
 
             ajax(encodedScripturesUrlParameters(bookId, chapter), getScripturesCallback, getScripturesFailure, true);
@@ -770,6 +788,7 @@ const Scriptures = (function () {
         changeHash,
         init,
         onHashChanged,
-        showLocation
+        showLocation,
+        animationType
     };
 }());
