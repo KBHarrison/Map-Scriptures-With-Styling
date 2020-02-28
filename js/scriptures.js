@@ -84,6 +84,7 @@ const Scriptures = (function () {
      */
     let addMarker;
     let ajax;
+    let animateTransition;
     let bookChapterValid;
     let booksGrid;
     let booksGridContent;
@@ -186,6 +187,39 @@ const Scriptures = (function () {
         request.onerror = failureCallback;
         request.send();
     };
+
+    animateTransition = function(type, chapterHtml) {
+        offScreenDiv.innerHTML = chapterHtml;
+        const width = $(offScreenDiv).width();
+
+        if (type === "next") {
+            $(offScreenDiv).css("left", width);
+            $(offScreenDiv).animate({left: `-=${width}`}, ANIMATION_DURATION);
+            $(onScreenDiv).animate({left: `-=${width}`}, ANIMATION_DURATION);
+        }
+        else if (type === "previous") {
+            $(offScreenDiv).css("left", -width);
+            $(offScreenDiv).animate({left: `+=${width}`}, ANIMATION_DURATION);
+            $(onScreenDiv).animate({left: `+=${width}`}, ANIMATION_DURATION);
+        }
+        else {
+            $(offScreenDiv).css("opacity", 0);
+            $(offScreenDiv).css("left", 0);
+            $(offScreenDiv).animate({opacity: 1}, ANIMATION_DURATION);
+            $(onScreenDiv).animate({opacity: 0}, ANIMATION_DURATION);
+        }
+        window.animationType = undefined;
+
+        const temp = onScreenDiv;
+
+        onScreenDiv = offScreenDiv;
+        offScreenDiv = temp;
+
+        $(onScreenDiv).css("z-index", 1);
+        $(offScreenDiv).css("z-index", 0);
+        $(onScreenDiv).css("opacity", 1);
+        $(offScreenDiv).css("opacity", 1);
+    }
 
     bookChapterValid = function (bookId, chapter) {
         let book = books[bookId];
@@ -339,36 +373,10 @@ const Scriptures = (function () {
     };
 
     getScripturesCallback = function (chapterHtml) {
-        offScreenDiv.innerHTML = chapterHtml;
-        const width = $(offScreenDiv).width();
-                
-        if (window.animationType === "next") {
-            $(offScreenDiv).css("left", width);
-            $(offScreenDiv).animate({left: `-=${width}`}, ANIMATION_DURATION);
-            $(onScreenDiv).animate({left: `-=${width}`}, ANIMATION_DURATION);
-        }
-        else if (window.animationType === "previous") {
-            $(offScreenDiv).css("left", -width);
-            $(offScreenDiv).animate({left: `+=${width}`}, ANIMATION_DURATION);
-            $(onScreenDiv).animate({left: `+=${width}`}, ANIMATION_DURATION);
-        }
-        else {
-            $(offScreenDiv).css("opacity", 0);
-            $(offScreenDiv).css("left", 0);
-            $(offScreenDiv).animate({opacity: 1}, ANIMATION_DURATION);
-            $(onScreenDiv).animate({opacity: 0}, ANIMATION_DURATION);
-        }
+        
+        animateTransition(window.animationType, chapterHtml);
         window.animationType = undefined;
 
-        const temp = onScreenDiv;
-
-        onScreenDiv = offScreenDiv;
-        offScreenDiv = temp;
-
-        $(onScreenDiv).css("z-index", 1);
-        $(offScreenDiv).css("z-index", 0);
-        $(onScreenDiv).css("opacity", 1);
-        $(offScreenDiv).css("opacity", 1);
         document.querySelectorAll(".navheading").forEach(function (element) {
             element.appendChild(parseHtml(`<div class="nextprev">${requestedNextPrevious}</div>`)[0]);
         });
