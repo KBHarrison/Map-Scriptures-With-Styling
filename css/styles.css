@@ -123,17 +123,22 @@ div.subtitle {
     position: relative;
 }
 
-#newScriptures {
-    max-width: 440px;
-    flex: 1 1 30%;
+#scripdiv1, #scripdiv2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
     height: 100%;
-    min-height: 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    border-right: 1px solid #aaa;   
-    color: red;
-    z-index: 1500;
-    position: relative;
+}
+
+#scripdiv1 {
+    z-index: 1;
+    /* background-color: red; */
+}
+
+#scripdiv2 {
+    z-index: 0;
+    /* background-color: blue; */
 }
 
 #scripnav {
@@ -146,6 +151,7 @@ div.subtitle {
 
 #map {
     flex: 1 1 80%;
+    z-index: 10000;
 }
 
 .volume {

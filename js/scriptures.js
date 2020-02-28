@@ -27,6 +27,7 @@ const Scriptures = (function () {
     /*------------------------------------------------------------------------
      *                      CONSTANTS
      */
+    const ANIMATION_DURATION = 500;
     const BOTTOM_PADDING = "<br /><br />";
     const CHEVRON = "<i class='material-icons'>chevron_right</i>"
     const CLASS_BOOKS = "books";
@@ -35,9 +36,10 @@ const Scriptures = (function () {
     const CLASS_ICON = "material-icons";
     const CLASS_VOLUME = "volume";
     const DIV_BREADCRUMBS = "crumbs";
-    const DIV_NEW_SCRIPTURES = "newScriptures";
     const DIV_SCRIPTURES_NAVIGATOR = "scripnav";
     const DIV_SCRIPTURES = "scriptures";
+    const DIV_SCRIPTURES1 = "scripdiv1";
+    const DIV_SCRIPTURES2 = "scripdiv2";
     const ICON_NEXT = "skip_next";
     const ICON_PREVIOUS = "skip_previous";
     const INDEX_LATITUDE = 3;
@@ -70,6 +72,8 @@ const Scriptures = (function () {
     let gmLabels = [];
     let gmMarkers = [];
     let initializedMapLabel = false;
+    let offScreenDiv;
+    let onScreenDiv;
     let requestedBreadcrumbs;
     let requestedNextPrevious;
     let retryDelay = 500;
@@ -212,7 +216,7 @@ const Scriptures = (function () {
                 classKey: CLASS_BUTTON,
                 id: book.id,
                 href: `#${volume.id}:${book.id}`,
-                content: book.gridName
+                content: book.citeFull
             });
         });
 
@@ -335,23 +339,36 @@ const Scriptures = (function () {
     };
 
     getScripturesCallback = function (chapterHtml) {
-        
-        if (animationType === "next") {
-            document.getElementById(DIV_NEW_SCRIPTURES).innerHTML = chapterHtml;
-            $(`#${DIV_SCRIPTURES}`).hide("slide");
+        offScreenDiv.innerHTML = chapterHtml;
+        const width = $(offScreenDiv).width();
+                
+        if (window.animationType === "next") {
+            $(offScreenDiv).css("left", width);
+            $(offScreenDiv).animate({left: `-=${width}`}, ANIMATION_DURATION);
+            $(onScreenDiv).animate({left: `-=${width}`}, ANIMATION_DURATION);
         }
-        else if (animationType === "previous") {
-
+        else if (window.animationType === "previous") {
+            $(offScreenDiv).css("left", -width);
+            $(offScreenDiv).animate({left: `+=${width}`}, ANIMATION_DURATION);
+            $(onScreenDiv).animate({left: `+=${width}`}, ANIMATION_DURATION);
         }
         else {
-            document.getElementById(DIV_NEW_SCRIPTURES).innerHTML = chapterHtml;
-            $(`#scriptures`).toggle("slide");    
-            $('#newScriptures').toggle("slide");
+            $(offScreenDiv).css("opacity", 0);
+            $(offScreenDiv).css("left", 0);
+            $(offScreenDiv).animate({opacity: 1}, ANIMATION_DURATION);
+            $(onScreenDiv).animate({opacity: 0}, ANIMATION_DURATION);
         }
-        animationType = "";
-        document.getElementById("scriptures").innerHTML = chapterHtml;
-        // $("#newScriptures").hide(2000);
-        // $("#scriptures").toggle("slide");
+        window.animationType = undefined;
+
+        const temp = onScreenDiv;
+
+        onScreenDiv = offScreenDiv;
+        offScreenDiv = temp;
+
+        $(onScreenDiv).css("z-index", 1);
+        $(offScreenDiv).css("z-index", 0);
+        $(onScreenDiv).css("opacity", 1);
+        $(offScreenDiv).css("opacity", 1);
         document.querySelectorAll(".navheading").forEach(function (element) {
             element.appendChild(parseHtml(`<div class="nextprev">${requestedNextPrevious}</div>`)[0]);
         });
@@ -450,6 +467,8 @@ const Scriptures = (function () {
         let booksLoaded = false;
         let volumesLoaded = false;
 
+        onScreenDiv = document.getElementById(DIV_SCRIPTURES1);
+        offScreenDiv = document.getElementById(DIV_SCRIPTURES2);
         ajax(URL_BOOKS, function (booksObject) {
             books = booksObject;
             booksLoaded = true;
@@ -537,13 +556,13 @@ const Scriptures = (function () {
             if (nextPrev === undefined) {
                 requestedNextPrevious = "";
             } else {
-                requestedNextPrevious = "<span id='nextChapter' onclick='Scriptures.animationType = \"previous\"'>" + nextPreviousMarkup(nextPrev, ICON_PREVIOUS) + "</span>";
+                requestedNextPrevious = "<span id='nextChapter' onclick='window.animationType = \"previous\"'>" + nextPreviousMarkup(nextPrev, ICON_PREVIOUS) + "</span>";
             }
 
             nextPrev = nextChapter(bookId, chapter);
 
             if (nextPrev !== undefined) {
-                requestedNextPrevious += "<span id='previousChapter' onclick='Scriptures.animationType = \"next\"'>" + nextPreviousMarkup(nextPrev, ICON_NEXT) + "</span>";
+                requestedNextPrevious += "<span id='previousChapter' onclick='window.animationType = \"next\"'>" + nextPreviousMarkup(nextPrev, ICON_NEXT) + "</span>";
             }
 
             ajax(encodedScripturesUrlParameters(bookId, chapter), getScripturesCallback, getScripturesFailure, true);
@@ -551,7 +570,7 @@ const Scriptures = (function () {
     };
 
     navigateHome = function (volumeId) {
-        document.getElementById(DIV_SCRIPTURES).innerHTML = htmlDiv({
+        onScreenDiv.innerHTML = htmlDiv({
             id: DIV_SCRIPTURES_NAVIGATOR,
             content: volumesGridContent(volumeId)
         });
@@ -754,7 +773,7 @@ const Scriptures = (function () {
     };
 
     transitionScriptures = function (newContent) {
-        document.getElementById(DIV_SCRIPTURES).innerHTML = htmlDiv({content: newContent});
+        onScreenDiv.innerHTML = htmlDiv({content: newContent});
         setupMarkers(newContent);
     };
 
