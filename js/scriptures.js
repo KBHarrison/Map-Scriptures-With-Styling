@@ -188,7 +188,7 @@ const Scriptures = (function () {
         request.send();
     };
 
-    animateTransition = function(type, chapterHtml) {
+    animateTransition = function(chapterHtml, type) {
         offScreenDiv.innerHTML = chapterHtml;
         const width = $(offScreenDiv).width();
 
@@ -373,14 +373,14 @@ const Scriptures = (function () {
     };
 
     getScripturesCallback = function (chapterHtml) {
-        
-        animateTransition(window.animationType, chapterHtml);
+
+        animateTransition(chapterHtml, window.animationType);
         window.animationType = undefined;
 
         document.querySelectorAll(".navheading").forEach(function (element) {
             element.appendChild(parseHtml(`<div class="nextprev">${requestedNextPrevious}</div>`)[0]);
         });
-        document.getElementById(DIV_BREADCRUMBS).innerHTML = requestedBreadcrumbs;
+        transitionBreadcrumbs(requestedBreadcrumbs);
         setupMarkers();
     };
 
@@ -578,12 +578,13 @@ const Scriptures = (function () {
     };
 
     navigateHome = function (volumeId) {
-        onScreenDiv.innerHTML = htmlDiv({
+
+        animateTransition(htmlDiv({
             id: DIV_SCRIPTURES_NAVIGATOR,
             content: volumesGridContent(volumeId)
-        });
+        }));
 
-        document.getElementById(DIV_BREADCRUMBS).innerHTML = breadcrumbs(volumeForId(volumeId));
+        transitionBreadcrumbs(breadcrumbs(volumeForId(volumeId)));
     };
 
     // Book ID and chapter must be integers
@@ -775,13 +776,51 @@ const Scriptures = (function () {
         return book.tocName;
     };
 
-    transitionBreadcrumbs = function (newCrumbs) {
-        document.getElementById(DIV_BREADCRUMBS).innerHTML = newCrumbs;
+    transitionBreadcrumbs = function (html) {
+        // TODO: Add breadcrumb transitions
+        // let oldCrumbs = document.getElementById(DIV_BREADCRUMBS).querySelectorAll("li");
+
+        let newCrumbs = $.parseHTML(html)[0].children[0].children;
+        let newString = "";
+        let oldCrumbs = "";
+        if (document.getElementById(DIV_BREADCRUMBS).innerHTML !== "") {
+            $.parseHTML(document.getElementById(DIV_BREADCRUMBS).innerHTML)[0].children;
+        } else {
+            document.getElementById(DIV_BREADCRUMBS).innerHTML = html;
+            return;
+        }
+        const oldLength = oldCrumbs.length;
+        const newLength = newCrumbs.length;
+        if (newLength > oldLength) {
+            let index = 1;
+            for (item of newCrumbs) {
+                item = $(item);
+                if (index > oldLength) {
+                    item.css("opacity", 0);
+                    item.addClass("fadeOut");
+                }
+                newString += item[0].outerHtml;
+                index += 1;
+            }
+        } else {
+            let index = 1;
+            for (item of oldCrumbs) {
+                item = $(item);
+                if (index > newLength) {
+                    item.addClass("fadeIn");
+                }
+                newString += item[0].outerHtml;
+                index += 1;
+            }
+        }
+
+
+        document.getElementById(DIV_BREADCRUMBS).innerHTML = `<ul>${newString}</ul>`;
 
     };
 
     transitionScriptures = function (newContent) {
-        onScreenDiv.innerHTML = htmlDiv({content: newContent});
+        animateTransition(htmlDiv({content: newContent}));
         setupMarkers(newContent);
     };
 
