@@ -19,7 +19,6 @@ ul > li > a:hover {
     display: inline;
     font-size: large;
     list-style-type: none;
-    culor: orangered;
 }
 
 ul > i.material-icons{
@@ -31,7 +30,6 @@ i {
 }
 
 
-
 body {
     color: #222;
     background-color:white;
@@ -40,6 +38,7 @@ body {
     min-height: 100%;
     font-weight: bold;
     font-size: 10pt;
+    flex-direction: column;
 }
 
 img {
@@ -75,15 +74,6 @@ img {
     align-content: stretch;
 }
 
-/* #crumbs {
-    padding-left: 1.25em;
-    order: -1;
-	display: flex;
-	align-items: center;
-} */
-/* #crumbs li::after {
-    content:"chevron_right";
-} */
 
 
 #centerhead {
@@ -113,7 +103,6 @@ div.subtitle {
 }
 
 #scriptures {
-    /* min-width: 220px; */
     max-width: 440px;
     flex: 1 1 30%;
     height: 100%;
@@ -134,12 +123,10 @@ div.subtitle {
 
 #scripdiv1 {
     z-index: 1;
-    /* background-color: red; */
 }
 
 #scripdiv2 {
     z-index: 0;
-    /* background-color: blue; */
 }
 
 #scripnav {
@@ -372,3 +359,14 @@ span.verse {
 li.match {
     background-color: #ffffcc;
 }
+
+@media only screen and (max-width: 700px) {
+
+    body {
+        flex-direction: column;
+    }
+    #map {
+        flex-direction: column !important;
+    }
+  }
+

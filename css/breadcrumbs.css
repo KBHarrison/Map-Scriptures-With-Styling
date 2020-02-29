@@ -74,10 +74,6 @@ a {
   padding: 0 10px 0 20px;  
 }
 
-/* #crumbs li a:hover {
-    filter: brightness(85%);
-} */
-
 #crumbs li.activePage p,
 #crumbs li.activePage a {
   background: #333;
