@@ -29,6 +29,7 @@ const Scriptures = (function () {
      */
     const ANIMATION_DURATION = 500;
     const BOTTOM_PADDING = "<br /><br />";
+    const BREADCRUMB_ANIMATION_DURATION = 600;
     const CHEVRON = "<i class='material-icons'>chevron_right</i>"
     const CLASS_BOOKS = "books";
     const CLASS_BUTTON = "btn";
@@ -777,46 +778,15 @@ const Scriptures = (function () {
     };
 
     transitionBreadcrumbs = function (html) {
-        // TODO: Add breadcrumb transitions
-        // let oldCrumbs = document.getElementById(DIV_BREADCRUMBS).querySelectorAll("li");
 
-        let newCrumbs = $.parseHTML(html)[0].children[0].children;
-        let newString = "";
-        let oldCrumbs = "";
-        if (document.getElementById(DIV_BREADCRUMBS).innerHTML !== "") {
-            $.parseHTML(document.getElementById(DIV_BREADCRUMBS).innerHTML)[0].children;
+        var crumbContainer = document.getElementById(DIV_BREADCRUMBS);
+        if (crumbContainer.innerHTML !== "" && crumbContainer.innerHTML !== html) {
+            crumbContainer.classList.add('pre-animation');
+            setTimeout(() => crumbContainer.innerHTML = html, ANIMATION_DURATION / 1.5);
+            setTimeout(() => crumbContainer.classList.remove('pre-animation'), ANIMATION_DURATION);
         } else {
-            document.getElementById(DIV_BREADCRUMBS).innerHTML = html;
-            return;
+            crumbContainer.innerHTML = html;
         }
-        const oldLength = oldCrumbs.length;
-        const newLength = newCrumbs.length;
-        if (newLength > oldLength) {
-            let index = 1;
-            for (item of newCrumbs) {
-                item = $(item);
-                if (index > oldLength) {
-                    item.css("opacity", 0);
-                    item.addClass("fadeOut");
-                }
-                newString += item[0].outerHtml;
-                index += 1;
-            }
-        } else {
-            let index = 1;
-            for (item of oldCrumbs) {
-                item = $(item);
-                if (index > newLength) {
-                    item.addClass("fadeIn");
-                }
-                newString += item[0].outerHtml;
-                index += 1;
-            }
-        }
-
-
-        document.getElementById(DIV_BREADCRUMBS).innerHTML = `<ul>${newString}</ul>`;
-
     };
 
     transitionScriptures = function (newContent) {

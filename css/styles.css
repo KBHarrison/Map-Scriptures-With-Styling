@@ -54,11 +54,12 @@ img {
     background-color: white;
     color: black;
     height: 12%;
+    min-height: 70px;
     display: flex;
     flex-direction: row;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
     align-items: center;
-    z-index: 10000;
+    z-index: 10001;
 }
 
 #content {

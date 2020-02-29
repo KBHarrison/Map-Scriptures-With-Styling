@@ -45,6 +45,13 @@ a {
 
 #crumbs {
   position: relative;
+  transition: all .5s;
+  max-height: 300px;
+  opacity: 1;
+}
+#crumbs.pre-animation {
+  opacity: 0;
+  max-height: 0;
 }
 
 #crumbs li {
